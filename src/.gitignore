@@ -1,9 +1,0 @@
-#object files
-*.o
-
-#executables
-client
-server
-
-#swap files
-*.swp
