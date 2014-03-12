@@ -1,8 +1,8 @@
 /*
-   Brooks Kindle
-   brooks.kindle@wsu.edu
-
-   client.h	-	header file for client side program
+ * Brooks Kindle
+ * brooks.kindle@wsu.edu
+ *
+ * client.h	-	header file for client side program
  */
 
 #ifndef CLIENT_H

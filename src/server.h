@@ -1,13 +1,14 @@
 /*
-   Brooks Kindle
-   brooks.kindle@wsu.edu
-
-   server.h    -   header file for server side program
+ * Brooks Kindle
+ * brooks.kindle@wsu.edu
+ *
+ * server.h	-	header file for server side program
  */
 
 #ifndef SERVER_H
 #define SERVER_H
 
+//includes
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -18,5 +19,9 @@
 #include <string.h>
 #include <sys/types.h>
 #include <time.h>//just for the demo
+
+//function prototypes
+
+int serverInit(void);
 
 #endif

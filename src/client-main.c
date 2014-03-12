@@ -1,8 +1,8 @@
 /*
-   Brooks Kindle
-   brooks.kindle@wsu.edu
-
-   client-main.c    -   entry point for client-side program
+ * Brooks Kindle
+ * brooks.kindle@wsu.edu
+ *
+ * client-main.c	-	entry point for client-side program
  */
 
 #include "client.h"

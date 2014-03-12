@@ -1,8 +1,8 @@
 /*
-   Brooks Kindle
-   brooks.kindle@wsu.edu
-
-   server-main.c    -   entry point for server-side program
+ * Brooks Kindle
+ * brooks.kindle@wsu.edu
+ *
+ * server-main.c	-	entry point for server-side program
  */
 
 #include "server.h"
