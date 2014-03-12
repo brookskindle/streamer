@@ -2,8 +2,11 @@
    Brooks Kindle
    brooks.kindle@wsu.edu
 
-   server.c    -   entry point for server-side program
+   server.c    -   source file for server side code
  */
 
-int main(void) {
-}//end main
+#include "server.h"
+
+/* Initializes the tcp/ip server */
+void serverInit(char *filename) {
+}//end serverInit

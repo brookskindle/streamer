@@ -1,2 +1,2 @@
 #Streamer
-##A mp3 streaming program
+##A music streaming program
