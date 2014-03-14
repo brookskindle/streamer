@@ -8,6 +8,8 @@
 
 #include "server.h"
 
+const unsigned int PORT_NO = 5000;
+
 int serverInit(void) {
 	int listenfd = 0;
 	struct sockaddr_in serv_addr;
@@ -41,3 +43,9 @@ int serverInit(void) {
 	//return socket fd
 	return listenfd;
 }//end serverInit
+
+
+int getNextClient(int serverfd) {
+	int clientfd = accept(serverfd, NULL, NULL); //wait until client connects
+	return clientfd;
+}//end getNextClient

@@ -23,7 +23,7 @@
 #include <time.h>//just for the demo
 
 //global variable declarations
-const unsigned int PORT_NO = 5000; ///< default port number to use
+const extern unsigned int PORT_NO; ///< default port number to use
 
 //function prototypes
 /**

@@ -36,17 +36,19 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	//processing loop
-	while((n = read(sockfd, recvBuff, sizeof(recvBuff) - 1)) > 0) { //read success
-		recvBuff[n] = 0; //null terminate
-		if(fputs(recvBuff, stdout) == EOF) {
-			fprintf(stderr, "Error: fputs error\n");
+	
+	while(1) { //processing loop
+		printf("Enter command (\"exit\" to quit): ");
+		fgets(recvBuff, sizeof(recvBuff), stdin); //get user input
+		if(!strcmp("quit", recvBuff)) {
+			break;
+		}
+		n = write(sockfd, recvBuff, sizeof(recvBuff));
+		if(n == -1) {
+			printf("Unable to write to server.\n");
+			break;
 		}
 	}//end while
-
-	if(n < 0) {
-		printf("Read error\n");
-	}
 
 	close(sockfd);//close socket if it hasn't already been closed
 	return 0;

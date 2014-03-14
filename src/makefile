@@ -8,11 +8,11 @@ CFLAGS=-m32
 SER_EXE=server
 CLI_EXE=client
 
-all: server client
+all: client server 
 debug: CFLAGS += -ggdb
 debug: all
-server: server-main.c server.h
-	$(CC) server-main.c -o $(SER_EXE) $(CFLAGS)
+server: server-main.c server.h server.c
+	$(CC) server-main.c server.c -o $(SER_EXE) $(CFLAGS)
 client: client-main.c client.h
 	$(CC) client-main.c -o $(CLI_EXE) $(CFLAGS)
 clean:
