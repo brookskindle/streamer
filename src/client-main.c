@@ -9,12 +9,20 @@
 
 int main(int argc, char *argv[]) {
 	int sockfd = 0, n = 0;
-	char recvBuff[1024];
+	char recvBuff[1024],
+		 localIp[] = "127.0.0.1",
+		 *serverIp = 0;
 	struct sockaddr_in serv_addr;
 
-	if(argc != 2) {
-		printf("Usage: %s <ip of server> \n", argv[0]);
+	if(argc > 2) {
+		printf("Usage: %s [ip of server]\n", argv[0]);
 		return 1;
+	}
+	else if(argc == 1) { //no ip specified, assume localhost
+		serverIp = localIp;
+	}
+	else { //ip specified, use that
+		serverIp = argv[1];
 	}
 
 	memset(&serv_addr, '0', sizeof(serv_addr));
@@ -26,7 +34,7 @@ int main(int argc, char *argv[]) {
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(5000);
 
-	if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr) <= 0) {
+	if(inet_pton(AF_INET, serverIp, &serv_addr.sin_addr) <= 0) {
 		printf("inet_pton error occurred\n");
 		return 1;
 	}
@@ -40,10 +48,11 @@ int main(int argc, char *argv[]) {
 	while(1) { //processing loop
 		printf("Enter command (\"exit\" to quit): ");
 		fgets(recvBuff, sizeof(recvBuff), stdin); //get user input
-		if(!strcmp("quit", recvBuff)) {
-			break;
+		recvBuff[strlen(recvBuff) - 1] = 0; //remove newline character
+		if(!strcmp("exit", recvBuff)) {
+			break; //user wishes to exit
 		}
-		n = write(sockfd, recvBuff, sizeof(recvBuff));
+		n = write(sockfd, recvBuff, sizeof(recvBuff)); //write input to server
 		if(n == -1) {
 			printf("Unable to write to server.\n");
 			break;

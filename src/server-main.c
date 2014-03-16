@@ -23,8 +23,6 @@ int main(void) {
 		connfd = accept(listenfd, (struct sockaddr *)&client_addr, (socklen_t *)&len);
 		printf("Client connected from IP=%s on PORT=%d\n",
 				inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
-		close(connfd);
-		continue;
 
 		while(1) { //processing loop
 			n = read(connfd, sendBuff, sizeof(sendBuff));
