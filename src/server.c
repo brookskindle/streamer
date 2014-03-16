@@ -36,6 +36,8 @@ int serverInit(void) {
 	//assigns the details of serv_addr to listenfd (our socket)
 	bind(listenfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
+	//finally, begin listening from socket!
+	listen(listenfd, 10); //queue up to 10 clients
 	printf("Listening from IP: %s on PORT: %d\n", inet_ntoa(serv_addr.sin_addr),
 		ntohs(serv_addr.sin_port));
 	printf("**********Init done**********\n");
