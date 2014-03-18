@@ -8,13 +8,20 @@
 
 #include "server.h"
 
-int main(void) {
+int main(int argc, char *argv[]) {
 	int listenfd = 0, connfd = 0, n = 0, len = 0;
 	char sendBuff[1025] = {0};
 	struct sockaddr_in client_addr;
+	FILE *infile = 0;
 
 	if((listenfd = serverInit()) == -1) { //error setting up server
 		fprintf(stderr, "Error: unable to initialize server\n");
+		return 1;
+	}
+
+	if(!(infile = getConfigFile())) { //unable to open config file
+		fprintf(stderr, "Cannot open config file \"%s\", make s", CONFIG_FILE);
+		fprintf(stderr, "ure the file exists and you have read permissions.\n");
 		return 1;
 	}
 
@@ -36,8 +43,10 @@ int main(void) {
 				continue;
 			}
 
-			printf("Client sent: %s\n", sendBuff);
+			executeInput(sendBuff, connfd, infile);
 		}//end while
 		sleep(1); //sleep for a tiny bit to we don't use all CPU power, hehehe
 	}//end while
+
+	fclose(infile); //close config file
 }//end main

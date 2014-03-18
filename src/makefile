@@ -11,9 +11,11 @@ CLI_EXE=client
 all: client server 
 debug: CFLAGS += -ggdb
 debug: all
-server: server-main.c server.h server.c
-	$(CC) server-main.c server.c -o $(SER_EXE) $(CFLAGS)
-client: client-main.c client.h
-	$(CC) client-main.c -o $(CLI_EXE) $(CFLAGS)
+server: server-main.c server.h server.c streamer
+	$(CC) streamer.o server-main.c server.c -o $(SER_EXE) $(CFLAGS)
+client: client-main.c client.h streamer
+	$(CC) streamer.o client-main.c -o $(CLI_EXE) $(CFLAGS)
+streamer: streamer.h streamer.c
+	$(CC) -c streamer.c
 clean:
 	rm -rf *.o $(SER_EXE) $(CLI_EXE)

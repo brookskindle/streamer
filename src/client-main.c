@@ -52,9 +52,17 @@ int main(int argc, char *argv[]) {
 		if(!strcmp("exit", recvBuff)) {
 			break; //user wishes to exit
 		}
+		else if(!strcmp("ls", recvBuff)) {
+		}
+		else if(strstr(recvBuff, "get") == recvBuff) {
+		}
+		else {
+			fprintf(stderr, "Unrecognized command: %s\n", recvBuff);
+			continue;
+		}
 		n = write(sockfd, recvBuff, sizeof(recvBuff)); //write input to server
 		if(n == -1) {
-			printf("Unable to write to server.\n");
+			fprintf(stderr, "Unable to write to server.\n");
 			break;
 		}
 	}//end while

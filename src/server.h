@@ -21,9 +21,10 @@
 #include <string.h>
 #include <sys/types.h>
 #include <time.h>//just for the demo
+#include "streamer.h"
 
 //global variable declarations
-const extern unsigned int PORT_NO; ///< default port number to use
+const extern char CONFIG_FILE[]; ///< default server configuration file
 
 //function prototypes
 /**
@@ -39,5 +40,35 @@ int serverInit(void);
  * @return File descriptor (socket) of a connected client.
  */
 int getNextClient(int serverfd);
+
+/**
+ * @brief Locates the server configuration file and returns a FILE pointer to it
+ * @return FILE pointer to the configuration file.
+ */
+FILE *getConfigFile(void);
+
+/**
+ * @brief Attempts to execute client input.
+ *
+ * If the input is a valid command, it will be executed. Else, an error
+ * message will be printed and nothing will happen.
+ * 
+ * @param inp string input of the client
+ * @param fd file descriptor to print results to
+ * @param cfg server configuration file
+ */
+void executeInput(char *inp, int fd, FILE *cfg);
+
+/**
+ * @brief Lists the contents of each directory in the server configuration file.
+ *
+ * Error messages will be printed to stderr for every path in the configuration
+ * file that cannot be opened and read from as a directory.
+ *
+ * @param fd file descriptor to print results to
+ * @param cfg configuration file (tells us what directories to list)
+ * @return the number of paths that could not be read from (so 0 is success)
+ */
+int ls(int fd, FILE *cfg);
 
 #endif

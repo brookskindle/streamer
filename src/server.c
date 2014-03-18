@@ -6,9 +6,12 @@
  * @date March 2014
  */
 
+#include <sys/types.h>
+#include <dirent.h>
 #include "server.h"
 
-const unsigned int PORT_NO = 5000;
+const char CONFIG_FILE[] = ".streamer";
+char buf[1024] = {0};
 
 int serverInit(void) {
 	int listenfd = 0;
@@ -51,3 +54,58 @@ int getNextClient(int serverfd) {
 	int clientfd = accept(serverfd, NULL, NULL); //wait until client connects
 	return clientfd;
 }//end getNextClient
+
+
+FILE *getConfigFile(void) {
+	return fopen(CONFIG_FILE, "r"); //open config file for reading
+}//end getConfigFile
+
+
+void executeInput(char *inp, int fd, FILE *cfg) {
+	rewind(cfg); //restart config file from beginning
+	if(!strcmp(inp, "ls")) { //ls
+		ls(fd, cfg);
+	}
+	else if(strstr(inp, "get") == inp) { //get
+	}
+	else { //unknown command
+		fprintf(stderr, "Unknown command %s..skipping\n", inp);
+	}
+}//end executeInput
+
+
+int ls(int fd, FILE *cfg) {
+	int nbad = 0, //number of bad path entries in config file
+		n = 0,
+		len = 0;
+	char *path = 0;
+	DIR *dir = 0;
+	struct dirent *file = 0;
+
+	getline(&path, (size_t *)&len, cfg);
+	do { //process each line in config file
+		n = strlen(path);
+		path[n-- - 1] = 0; //remove newline
+		if(path[n - 1] == '/' && n > 1) {
+			path[n - 1] = 0;
+		}
+		dir = opendir(path);
+		if(dir) {
+			while((file = readdir(dir))) { //get directory entry
+				n = sprintf(buf, "%s/%s", path, file->d_name);
+				write(fd, buf, n); //write filename to file descriptor
+				printf("Wrote %s to client\n", buf);
+			}
+			closedir(dir);
+		}//end if
+		else { //unable to open directory
+			fprintf(stderr, "Config file - unable to open directory %s\n",
+					path);
+			nbad++;
+		}
+
+		getline(&path, (size_t *)&len, cfg);
+	}while(!feof(cfg));
+
+	return nbad;
+}//end ls

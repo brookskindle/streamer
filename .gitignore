@@ -13,3 +13,4 @@ server
 html
 latex
 doc/doxygen.html
+.streamer
