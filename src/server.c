@@ -107,5 +107,10 @@ int ls(int fd, FILE *cfg) {
 		getline(&path, (size_t *)&len, cfg);
 	}while(!feof(cfg));
 
+	//send end of transmission to socket
+	n = sprintf(buf, "%s", END_OF_INPUT);
+	write(fd, buf, n);
+	printf("Wrote %s to client\n", buf);
+
 	return nbad;
 }//end ls
