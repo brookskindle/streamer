@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
 					*(strstr(recvBuff, END_OF_INPUT)) = 0; //null terminate
 					break;
 				}
-				printf("%s\n", recvBuff);
+				printf("%s", recvBuff);
 			}//end while
 		}//end else if
 		else if(strstr(recvBuff, "get") == recvBuff) {

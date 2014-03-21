@@ -7,7 +7,7 @@
  */
 
 #include <sys/types.h>
-#include <dirent.h>
+#include <libgen.h>
 #include "server.h"
 
 const char CONFIG_FILE[] = ".streamer";
@@ -95,14 +95,7 @@ int ls(int fd, FILE *cfg) {
 		}
 		dir = opendir(path);
 		if(dir) {
-			while((file = readdir(dir))) { //get directory entry
-				if(file->d_type != DT_REG) { //file not regular
-					continue;
-				}
-				n = sprintf(buf, "%s/%s", path, file->d_name);
-				write(fd, buf, n); //write filename to file descriptor
-				printf("%s\n", buf);
-			}
+			lsdir(fd, dir, path);
 			closedir(dir);
 		}//end if
 		else { //unable to open directory
@@ -121,3 +114,19 @@ int ls(int fd, FILE *cfg) {
 
 	return nbad;
 }//end ls
+
+
+void lsdir(int fd, DIR *dir, char *path) {
+	struct dirent *file = 0;
+	int n = 0;
+	char *newpath = 0;
+	DIR *newdir = 0;
+	while((file = readdir(dir))) { //get directory entry
+		if(file->d_type != DT_REG) { //file not regular
+			continue;
+		}
+		n = sprintf(buf, "%s/%s\n", path, file->d_name);
+		write(fd, buf, n); //write filename to file descriptor
+		printf("%s\n", buf);
+	}
+}//end lsdir

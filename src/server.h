@@ -12,6 +12,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <dirent.h>
 #include "streamer.h"
 
 //global variable declarations
@@ -61,5 +62,15 @@ void executeInput(char *inp, int fd, FILE *cfg);
  * @return the number of paths that could not be read from (so 0 is success)
  */
 int ls(int fd, FILE *cfg);
+
+/**
+ * @brief lists all regular files in a given directory
+ *
+ * @param fd file descriptor to print results to
+ * @param dir directory in question
+ * @param path full path to given directory
+ */
+void lsdir(int fd, DIR *dir, char *path);
+
 
 #endif
