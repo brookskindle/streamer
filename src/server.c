@@ -62,11 +62,15 @@ FILE *getConfigFile(void) {
 
 
 void executeInput(char *inp, int fd, FILE *cfg) {
+	char *fname = 0;
 	rewind(cfg); //restart config file from beginning
 	if(!strcmp(inp, "ls")) { //ls
 		ls(fd, cfg);
 	}
 	else if(strstr(inp, "get") == inp) { //get
+		fname = strtok(inp, " ");
+		fname = fname + strlen(fname) + 1;
+		put(fd, fname);
 	}
 	else { //unknown command
 		fprintf(stderr, "Unknown command %s..skipping\n", inp);
@@ -92,9 +96,12 @@ int ls(int fd, FILE *cfg) {
 		dir = opendir(path);
 		if(dir) {
 			while((file = readdir(dir))) { //get directory entry
+				if(file->d_type != DT_REG) { //file not regular
+					continue;
+				}
 				n = sprintf(buf, "%s/%s", path, file->d_name);
 				write(fd, buf, n); //write filename to file descriptor
-				printf("Wrote %s to client\n", buf);
+				printf("%s\n", buf);
 			}
 			closedir(dir);
 		}//end if
@@ -110,7 +117,7 @@ int ls(int fd, FILE *cfg) {
 	//send end of transmission to socket
 	n = sprintf(buf, "%s", END_OF_INPUT);
 	write(fd, buf, n);
-	printf("Wrote %s to client\n", buf);
+	printf("%s\n", buf);
 
 	return nbad;
 }//end ls

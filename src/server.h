@@ -12,15 +12,6 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <string.h>
-#include <sys/types.h>
-#include <time.h>//just for the demo
 #include "streamer.h"
 
 //global variable declarations

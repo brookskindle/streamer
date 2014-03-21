@@ -16,6 +16,6 @@ server: server-main.c server.h server.c streamer
 client: client-main.c client.h streamer
 	$(CC) streamer.o client-main.c -o $(CLI_EXE) $(CFLAGS)
 streamer: streamer.h streamer.c
-	$(CC) -c streamer.c
+	$(CC) -c streamer.c $(CFLAGS)
 clean:
 	rm -rf *.o $(SER_EXE) $(CLI_EXE)

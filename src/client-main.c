@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
 
 	
 	while(1) { //processing loop
+		bzero(recvBuff, 1024);
 		printf("Enter command (\"exit\" to quit): ");
 		fgets(recvBuff, sizeof(recvBuff), stdin); //get user input
 		recvBuff[strlen(recvBuff) - 1] = 0; //remove newline character
@@ -53,17 +54,27 @@ int main(int argc, char *argv[]) {
 			break; //user wishes to exit
 		}
 		else if(!strcmp("ls", recvBuff)) {
-		}
+			n = write(sockfd, recvBuff, sizeof(recvBuff)); //write input to server
+			if(n == -1) {
+				fprintf(stderr, "Unable to write to server.\n");
+				break;
+			}
+			bzero(recvBuff, sizeof(recvBuff));
+			while((n = read(sockfd, recvBuff, sizeof(recvBuff)))) {
+				if(strstr(recvBuff, END_OF_INPUT)) { //end of input found
+					*(strstr(recvBuff, END_OF_INPUT)) = 0; //null terminate
+					break;
+				}
+				printf("%s\n", recvBuff);
+			}//end while
+		}//end else if
 		else if(strstr(recvBuff, "get") == recvBuff) {
-		}
+			n = write(sockfd, recvBuff, sizeof(recvBuff)); //write input to server
+			get(sockfd, ".tmp.mp3");
+		}//end else if
 		else {
 			fprintf(stderr, "Unrecognized command: %s\n", recvBuff);
 			continue;
-		}
-		n = write(sockfd, recvBuff, sizeof(recvBuff)); //write input to server
-		if(n == -1) {
-			fprintf(stderr, "Unable to write to server.\n");
-			break;
 		}
 	}//end while
 
