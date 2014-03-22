@@ -125,8 +125,9 @@ void lsdir(int fd, DIR *dir, char *path) {
 		if(file->d_type != DT_REG) { //file not regular
 			continue;
 		}
+		bzero(buf, sizeof(buf));
 		n = sprintf(buf, "%s/%s\n", path, file->d_name);
 		write(fd, buf, n); //write filename to file descriptor
-		printf("%s\n", buf);
+		printf("%s", buf);
 	}
 }//end lsdir
