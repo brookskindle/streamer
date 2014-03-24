@@ -9,7 +9,7 @@
 //#include <CSFML/Audio.h>
 #include "client.h"
 
-const char MUSIC_FILE[] = ".tmp.mp3";
+const char MUSIC_FILE[] = ".tmp.ogg";
 
 int play(const char *const filename) {
 }//end play

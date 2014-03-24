@@ -13,5 +13,7 @@ server
 html
 latex
 doc/doxygen.html
-.streamer
-*mp3
+
+#files created and used by the program
+streamer.config
+.tmp.ogg

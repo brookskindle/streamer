@@ -72,5 +72,18 @@ int ls(int fd, FILE *cfg);
  */
 void lsdir(int fd, DIR *dir, char *path);
 
+/**
+ * @brief Makes sure a file exists and is being monitored by the server.
+ *
+ * This means that the file must exist and the dirname of the file's absolute
+ * path must be a directory (or sub directory) of at least one path within
+ * the server configuration file.
+ *
+ * @param fname name of the file
+ * @param cfg server configuration file
+ * @return a positive integer (probably 1) if the file exists and is being
+ * monitored [success], or 0 if that is not the case [failure].
+ */
+int fileExists(const char *const fname, FILE *cfg);
 
 #endif

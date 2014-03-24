@@ -8,9 +8,10 @@
 
 #include <sys/types.h>
 #include <libgen.h>
+#include <limits.h>
 #include "server.h"
 
-const char CONFIG_FILE[] = ".streamer";
+const char CONFIG_FILE[] = "streamer.config";
 char buf[1024] = {0};
 
 int serverInit(void) {
@@ -70,7 +71,13 @@ void executeInput(char *inp, int fd, FILE *cfg) {
 	else if(strstr(inp, "get") == inp) { //get
 		fname = strtok(inp, " ");
 		fname = fname + strlen(fname) + 1;
-		put(fd, fname);
+		if(fileExists(fname, cfg)) {
+			put(fd, fname);
+		}
+		else { //invalid file specified
+			fprintf(stderr, "Error: Unknown file %s\n", fname);
+			write(fd, "-1", 3);
+		}
 	}
 	else { //unknown command
 		fprintf(stderr, "Unknown command %s..skipping\n", inp);
@@ -131,3 +138,26 @@ void lsdir(int fd, DIR *dir, char *path) {
 		printf("%s", buf);
 	}
 }//end lsdir
+
+
+int fileExists(const char *const fname, FILE *cfg) {
+	int exists = 0,
+		len = 0;
+	char path[PATH_MAX] = {0},
+		 cfgpath[PATH_MAX] = {0};
+	struct stat file;
+	if(realpath(fname, path)) { //valid path specified
+		if(!stat(path, &file)) { //file exists
+			rewind(cfg);
+			getline((char **)&cfgpath, (size_t *)&len, cfg);
+			while(!feof(cfg)) {
+				if(strstr(path, cfgpath) == path) {
+					exists = 1; //file is being monitored
+					break;
+				}
+				getline((char **)&cfgpath, (size_t *)&len, cfg);
+			}//end while
+		}
+	}
+	return exists;
+}//end fileExists
