@@ -9,6 +9,7 @@
 
 int main(int argc, char *argv[]) {
 	int sockfd = 0, n = 0;
+	int i = 0;
 	char recvBuff[1024],
 		 localIp[] = "127.0.0.1",
 		 *serverIp = 0;
@@ -62,10 +63,12 @@ int main(int argc, char *argv[]) {
 				fprintf(stderr, "Unable to write to server.\n");
 				break;
 			}
-			bzero(recvBuff, sizeof(recvBuff));
 			while((n = read(sockfd, recvBuff, sizeof(recvBuff)))) {
+				recvBuff[n] = 0; //null terminate input
 				if(strstr(recvBuff, END_OF_INPUT)) { //end of input found
-					*(strstr(recvBuff, END_OF_INPUT)) = 0; //null terminate
+					//null terminate before end of input
+					*(strstr(recvBuff, END_OF_INPUT)) = 0; 
+					fprintf(stderr, "%s", recvBuff);
 					break;
 				}
 				fprintf(stderr, "%s", recvBuff);
