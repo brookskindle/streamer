@@ -12,6 +12,7 @@
 
 const char CONFIG_FILE[] = ".streamer";
 char buf[1024] = {0};
+int i = 0;
 
 int serverInit(void) {
 	int listenfd = 0;
@@ -85,6 +86,7 @@ int ls(int fd, FILE *cfg) {
 	char *path = 0;
 	DIR *dir = 0;
 	struct dirent *file = 0;
+	i = 0;
 
 	getline(&path, (size_t *)&len, cfg);
 	do { //process each line in config file
@@ -126,7 +128,7 @@ void lsdir(int fd, DIR *dir, char *path) {
 			continue;
 		}
 		bzero(buf, sizeof(buf));
-		n = sprintf(buf, "%s/%s\n", path, file->d_name);
+		n = sprintf(buf, "%d\t%s/%s\n", i++, path, file->d_name);
 		write(fd, buf, n); //write filename to file descriptor
 		printf("%s", buf);
 	}

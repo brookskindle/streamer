@@ -6,7 +6,7 @@
  * @date March 2014
  */
 
-#include <CSFML/Audio.h>
+//#include <CSFML/Audio.h>
 #include "client.h"
 
 const char MUSIC_FILE[] = ".tmp.mp3";
