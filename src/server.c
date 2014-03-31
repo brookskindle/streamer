@@ -89,14 +89,17 @@ int ls(int fd, FILE *cfg) {
 	int nbad = 0, //number of bad path entries in config file
 		n = 0,
 		len = 0;
-	char *path = 0;
+	char *path = 0,
+		 realpath[PATH_MAX] = {0};
 	DIR *dir = 0;
 	struct dirent *file = 0;
 
+	path = realpath;
+	len = sizeof(realpath) / sizeof(char);
 	getline(&path, (size_t *)&len, cfg);
 	do { //process each line in config file
 		n = strlen(path);
-		path[n-- - 1] = 0; //remove newline
+		path[n-- - 1] = 0; //remove newline and adjust path length
 		if(path[n - 1] == '/' && n > 1) {
 			path[n - 1] = 0;
 		}
