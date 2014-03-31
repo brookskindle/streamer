@@ -7,7 +7,7 @@ CC=gcc
 CFLAGS=
 SER_EXE=server
 CLI_EXE=client
-#LIBS=-lcsfml-system -lcsfml-audio
+LIBS=-lcsfml-system -lcsfml-audio
 
 all: client server 
 debug: CFLAGS += -ggdb
