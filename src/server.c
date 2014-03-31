@@ -163,12 +163,13 @@ int fileExists(const char *const fname, FILE *cfg) {
 	int exists = 0,
 		len = 0;
 	char path[PATH_MAX] = {0},
-		 cfgpath[PATH_MAX] = {0};
+		 cfgpath[PATH_MAX] = {0},
+		 *p = cfgpath;
 	struct stat file;
 	if(realpath(fname, path)) { //valid path specified
 		if(!stat(path, &file)) { //file exists
 			rewind(cfg);
-			getline((char **)&cfgpath, (size_t *)&len, cfg);
+			getline(&p, (size_t *)&len, cfg);
 			while(!feof(cfg)) {
 				if(strstr(path, cfgpath) == path) {
 					exists = 1; //file is being monitored
