@@ -132,7 +132,23 @@ void lsdir(int fd, DIR *dir, char *path) {
 	char *newpath = 0;
 	DIR *newdir = 0;
 	while((file = readdir(dir))) { //get directory entry
-		if(file->d_type != DT_REG) { //file not regular
+		if(file->d_type == DT_DIR) { //file is a directory
+			if(!strcmp(file->d_name, ".") || !strcmp(file->d_name, "..")) {
+				continue; //don't worry about . and .. directories
+			}
+			strncat(path, "/", PATH_MAX - 3);
+			n = strlen(path); //get size of current directory
+			//append new dir name to path and call lsdir recursively
+			strncat(path, file->d_name, PATH_MAX - n - 1);
+			newdir = opendir(path);
+			if(newdir) {
+				lsdir(fd, newdir, path);
+				closedir(newdir);
+			}
+			path[n - 1] = 0; //truncate path back to current path
+			continue;
+		}
+		else if(file->d_type != DT_REG) { //file not a directory and is not regular
 			continue;
 		}
 		bzero(buf, sizeof(buf));
